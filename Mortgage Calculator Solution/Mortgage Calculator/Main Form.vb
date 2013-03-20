@@ -1,6 +1,6 @@
-﻿' PROGRAM:      Mortgage Calculator with Amortization Schedule - Final Project
-' DESCRIPTION:  A mortgage calculator that will calculate montly payments and interest
-'               rates in an amortization schedule.
+﻿' PROGRAM:      Mortgage Calculator - Final Project
+' DESCRIPTION:  A mortgage calculator that will calculate montly payments,
+'               total payment amount, and total interest.
 ' CREATE BY:    Ethan S. Lin on March 17, 2013
 
 Option Explicit On
@@ -13,8 +13,7 @@ Public Class frmMain
 
         ' set tooltip for the PMI labels
         tltpPMI.SetToolTip(lblPMIAmt, "An additional percentage increase applied to the original mortgage loan" &
-                           ControlChars.NewLine & "if the downpayment is less than 20% but no more than 20%. This increase" &
-                           ControlChars.NewLine & "will be dropped once the borrower fulfilled 20% of the mortgage payments.")
+                           ControlChars.NewLine & "if the downpayment is less than 20% but no more than 20%.")
 
         ' initially select the values for downpayment,
         ' loan term, and interest rate
@@ -51,6 +50,7 @@ Public Class frmMain
             Dim dblDownpayment As Double
             Dim dblPMI As Double
             Dim dblPMIAmt As Double
+            Dim boolPMIApplied As Boolean
             Dim dblLoanAmt As Double
 
             Double.TryParse(cmbDownpayment.Text, dblDownpaymentPercent)
@@ -63,13 +63,21 @@ Public Class frmMain
             lblLoanAmt.Text = dblLoanAmt.ToString("C2")
 
             If dblDownpaymentPercent < 20 Then
-                dblPMI = 20 - dblDownpaymentPercent
+                dblPMI = (20 - dblDownpaymentPercent) / 2
                 dblPMIAmt = dblLoanAmt * (dblPMI / 100)
                 lblPMIAmt.Text = dblPMIAmt.ToString("C2")
+                lblPMI.Text = dblPMI.ToString & "% PMI"
+                boolPMIApplied = True
             Else
                 lblPMIAmt.Text = "$0.00"
+                lblPMI.Text = "PMI"
+                boolPMIApplied = False
             End If
-            
+
+            lblTotalLoan.Text = (dblLoanAmt + dblPMIAmt).ToString("C2")
+
+            calculateMonthlyPayment((dblLoanAmt + dblPMIAmt))
+
         Else
 
             MessageBox.Show("Your home value must be greater than or equal to $15,000.",
@@ -96,4 +104,49 @@ Public Class frmMain
         End If
 
     End Sub
+
+    Private Sub cmbInterestRate_TextChanged(sender As Object, e As System.EventArgs) Handles cmbInterestRate.TextChanged
+        Dim dblInterestPercentage As Double
+
+        Double.TryParse(cmbInterestRate.Text, dblInterestPercentage)
+
+        If dblInterestPercentage < 0 OrElse dblInterestPercentage > 100 Then
+            MessageBox.Show("Interest rate percentage must be between 0 and 100.",
+                            "Mortgage Calculator", MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+            cmbInterestRate.Text = "0"
+            cmbInterestRate.SelectAll()
+        End If
+
+    End Sub
+
+    Private Function calculateMonthlyPayment(ByVal dblLoad As Double) As Double
+        Dim dblPayment As Double
+
+        Dim dblPrincipal As Double
+        Dim dblInterest As Double
+        Dim dblRate As Double
+        Dim intTerm As Integer
+        Dim dblTotalPmt As Double
+        Dim dblTotalInterest As Double
+
+        dblPrincipal = dblLoad
+
+        Double.TryParse(cmbInterestRate.Text, dblInterest)
+        dblRate = dblInterest / 100
+
+        Integer.TryParse(cmbLoanTerm.SelectedItem.ToString, intTerm)
+
+        dblPayment = -Financial.Pmt(dblRate / 12, intTerm * 12, dblPrincipal)
+        lblMonthlyAmt.Text = dblPayment.ToString("C2")
+
+        dblTotalPmt = dblPayment * (intTerm * 12)
+        lblPaymentAmt.Text = dblTotalPmt.ToString("C2")
+        lblPayment.Text = "Total of " & (intTerm * 12).ToString & " payments"
+
+        dblTotalInterest = dblTotalPmt - dblPrincipal
+        lblInterestAmt.Text = dblTotalInterest.ToString("C2")
+
+        Return dblPayment
+    End Function
 End Class

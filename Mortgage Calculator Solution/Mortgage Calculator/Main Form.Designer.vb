@@ -27,7 +27,7 @@ Partial Class frmMain
         Me.clmTerm = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.clmPayment = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.clmInterest = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.clmBalance = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.clmEndBalance = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.lblHomeVal = New System.Windows.Forms.Label()
         Me.lblDownPmt = New System.Windows.Forms.Label()
         Me.txtHomeVal = New System.Windows.Forms.TextBox()
@@ -40,9 +40,6 @@ Partial Class frmMain
         Me.lblPMIAmt = New System.Windows.Forms.Label()
         Me.tltpPMI = New System.Windows.Forms.ToolTip(Me.components)
         Me.cmbDownpayment = New System.Windows.Forms.ComboBox()
-        Me.grpAmortization = New System.Windows.Forms.GroupBox()
-        Me.radMonthly = New System.Windows.Forms.RadioButton()
-        Me.radYearly = New System.Windows.Forms.RadioButton()
         Me.btnCalc = New System.Windows.Forms.Button()
         Me.btnExit = New System.Windows.Forms.Button()
         Me.lblDownpaymentAmt = New System.Windows.Forms.Label()
@@ -57,12 +54,15 @@ Partial Class frmMain
         Me.lblMonthlyAmt = New System.Windows.Forms.Label()
         Me.lblDownpayment = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.grpAmortization.SuspendLayout()
+        Me.lblTotal = New System.Windows.Forms.Label()
+        Me.lblTotalLoan = New System.Windows.Forms.Label()
+        Me.clmBeginBal = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.SuspendLayout()
         '
         'lstvAmortization
         '
-        Me.lstvAmortization.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.clmTerm, Me.clmPayment, Me.clmInterest, Me.clmBalance})
+        Me.lstvAmortization.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.clmTerm, Me.clmBeginBal, Me.clmInterest, Me.clmPayment, Me.clmEndBalance})
+        Me.lstvAmortization.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lstvAmortization.FullRowSelect = True
         Me.lstvAmortization.GridLines = True
         Me.lstvAmortization.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
@@ -70,37 +70,37 @@ Partial Class frmMain
         Me.lstvAmortization.Location = New System.Drawing.Point(268, 73)
         Me.lstvAmortization.MultiSelect = False
         Me.lstvAmortization.Name = "lstvAmortization"
-        Me.lstvAmortization.Size = New System.Drawing.Size(516, 304)
-        Me.lstvAmortization.TabIndex = 17
+        Me.lstvAmortization.Size = New System.Drawing.Size(516, 229)
+        Me.lstvAmortization.TabIndex = 16
         Me.lstvAmortization.UseCompatibleStateImageBehavior = False
         Me.lstvAmortization.View = System.Windows.Forms.View.Details
         '
         'clmTerm
         '
-        Me.clmTerm.Text = "Term"
-        Me.clmTerm.Width = 129
+        Me.clmTerm.Text = "Month"
+        Me.clmTerm.Width = 56
         '
         'clmPayment
         '
         Me.clmPayment.Text = "Payment"
         Me.clmPayment.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.clmPayment.Width = 129
+        Me.clmPayment.Width = 115
         '
         'clmInterest
         '
         Me.clmInterest.Text = "Interest"
         Me.clmInterest.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.clmInterest.Width = 129
+        Me.clmInterest.Width = 115
         '
-        'clmBalance
+        'clmEndBalance
         '
-        Me.clmBalance.Text = "Balance"
-        Me.clmBalance.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.clmBalance.Width = 129
+        Me.clmEndBalance.Text = "Ending Balance"
+        Me.clmEndBalance.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.clmEndBalance.Width = 115
         '
         'lblHomeVal
         '
-        Me.lblHomeVal.Location = New System.Drawing.Point(12, 12)
+        Me.lblHomeVal.Location = New System.Drawing.Point(9, 9)
         Me.lblHomeVal.Name = "lblHomeVal"
         Me.lblHomeVal.Size = New System.Drawing.Size(120, 23)
         Me.lblHomeVal.TabIndex = 0
@@ -109,10 +109,10 @@ Partial Class frmMain
         '
         'lblDownPmt
         '
-        Me.lblDownPmt.Location = New System.Drawing.Point(12, 42)
+        Me.lblDownPmt.Location = New System.Drawing.Point(9, 43)
         Me.lblDownPmt.Name = "lblDownPmt"
         Me.lblDownPmt.Size = New System.Drawing.Size(120, 23)
-        Me.lblDownPmt.TabIndex = 2
+        Me.lblDownPmt.TabIndex = 1
         Me.lblDownPmt.Text = "&Downpayment:"
         Me.lblDownPmt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -121,7 +121,7 @@ Partial Class frmMain
         Me.txtHomeVal.Location = New System.Drawing.Point(137, 12)
         Me.txtHomeVal.Name = "txtHomeVal"
         Me.txtHomeVal.Size = New System.Drawing.Size(125, 24)
-        Me.txtHomeVal.TabIndex = 1
+        Me.txtHomeVal.TabIndex = 2
         '
         'lblLoanAmt
         '
@@ -129,13 +129,13 @@ Partial Class frmMain
         Me.lblLoanAmt.Location = New System.Drawing.Point(150, 79)
         Me.lblLoanAmt.Name = "lblLoanAmt"
         Me.lblLoanAmt.Size = New System.Drawing.Size(112, 40)
-        Me.lblLoanAmt.TabIndex = 21
+        Me.lblLoanAmt.TabIndex = 20
         Me.lblLoanAmt.Text = "$0"
         Me.lblLoanAmt.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'lblTerm
         '
-        Me.lblTerm.Location = New System.Drawing.Point(12, 203)
+        Me.lblTerm.Location = New System.Drawing.Point(9, 203)
         Me.lblTerm.Name = "lblTerm"
         Me.lblTerm.Size = New System.Drawing.Size(120, 23)
         Me.lblTerm.TabIndex = 4
@@ -147,7 +147,7 @@ Partial Class frmMain
         Me.cmbLoanTerm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbLoanTerm.FormattingEnabled = True
         Me.cmbLoanTerm.Items.AddRange(New Object() {"10", "15", "20", "25", "30"})
-        Me.cmbLoanTerm.Location = New System.Drawing.Point(16, 230)
+        Me.cmbLoanTerm.Location = New System.Drawing.Point(12, 229)
         Me.cmbLoanTerm.Name = "cmbLoanTerm"
         Me.cmbLoanTerm.Size = New System.Drawing.Size(60, 26)
         Me.cmbLoanTerm.TabIndex = 5
@@ -172,22 +172,22 @@ Partial Class frmMain
         '
         'lblPMI
         '
-        Me.lblPMI.AutoSize = True
         Me.lblPMI.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblPMI.Location = New System.Drawing.Point(52, 172)
+        Me.lblPMI.Location = New System.Drawing.Point(32, 170)
         Me.lblPMI.Name = "lblPMI"
-        Me.lblPMI.Size = New System.Drawing.Size(172, 16)
-        Me.lblPMI.TabIndex = 24
-        Me.lblPMI.Text = "Private Mortgage Insurance"
-        Me.lblPMI.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblPMI.Size = New System.Drawing.Size(70, 18)
+        Me.lblPMI.TabIndex = 23
+        Me.lblPMI.Text = "PMI"
+        Me.lblPMI.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'lblPMIAmt
         '
         Me.lblPMIAmt.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblPMIAmt.Location = New System.Drawing.Point(82, 140)
+        Me.lblPMIAmt.ForeColor = System.Drawing.Color.Chocolate
+        Me.lblPMIAmt.Location = New System.Drawing.Point(11, 141)
         Me.lblPMIAmt.Name = "lblPMIAmt"
         Me.lblPMIAmt.Size = New System.Drawing.Size(112, 40)
-        Me.lblPMIAmt.TabIndex = 23
+        Me.lblPMIAmt.TabIndex = 22
         Me.lblPMIAmt.Text = "$0"
         Me.lblPMIAmt.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -208,62 +208,32 @@ Partial Class frmMain
         Me.cmbDownpayment.Size = New System.Drawing.Size(100, 26)
         Me.cmbDownpayment.TabIndex = 3
         '
-        'grpAmortization
-        '
-        Me.grpAmortization.Controls.Add(Me.radMonthly)
-        Me.grpAmortization.Controls.Add(Me.radYearly)
-        Me.grpAmortization.Location = New System.Drawing.Point(13, 266)
-        Me.grpAmortization.Name = "grpAmortization"
-        Me.grpAmortization.Size = New System.Drawing.Size(249, 65)
-        Me.grpAmortization.TabIndex = 8
-        Me.grpAmortization.TabStop = False
-        Me.grpAmortization.Text = "Amortization Schedule"
-        '
-        'radMonthly
-        '
-        Me.radMonthly.Location = New System.Drawing.Point(124, 29)
-        Me.radMonthly.Name = "radMonthly"
-        Me.radMonthly.Size = New System.Drawing.Size(78, 22)
-        Me.radMonthly.TabIndex = 1
-        Me.radMonthly.Text = "&Monthly"
-        Me.radMonthly.UseVisualStyleBackColor = True
-        '
-        'radYearly
-        '
-        Me.radYearly.Checked = True
-        Me.radYearly.Location = New System.Drawing.Point(7, 29)
-        Me.radYearly.Name = "radYearly"
-        Me.radYearly.Size = New System.Drawing.Size(66, 22)
-        Me.radYearly.TabIndex = 0
-        Me.radYearly.TabStop = True
-        Me.radYearly.Text = "&Yearly"
-        Me.radYearly.UseVisualStyleBackColor = True
-        '
         'btnCalc
         '
-        Me.btnCalc.Location = New System.Drawing.Point(13, 337)
+        Me.btnCalc.Location = New System.Drawing.Point(12, 262)
         Me.btnCalc.Name = "btnCalc"
         Me.btnCalc.Size = New System.Drawing.Size(118, 40)
-        Me.btnCalc.TabIndex = 9
+        Me.btnCalc.TabIndex = 8
         Me.btnCalc.Text = "&Calculate"
         Me.btnCalc.UseVisualStyleBackColor = True
         '
         'btnExit
         '
-        Me.btnExit.Location = New System.Drawing.Point(144, 337)
+        Me.btnExit.Location = New System.Drawing.Point(142, 262)
         Me.btnExit.Name = "btnExit"
         Me.btnExit.Size = New System.Drawing.Size(118, 40)
-        Me.btnExit.TabIndex = 10
+        Me.btnExit.TabIndex = 9
         Me.btnExit.Text = "E&xit"
         Me.btnExit.UseVisualStyleBackColor = True
         '
         'lblDownpaymentAmt
         '
         Me.lblDownpaymentAmt.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDownpaymentAmt.ForeColor = System.Drawing.Color.ForestGreen
         Me.lblDownpaymentAmt.Location = New System.Drawing.Point(12, 79)
         Me.lblDownpaymentAmt.Name = "lblDownpaymentAmt"
         Me.lblDownpaymentAmt.Size = New System.Drawing.Size(112, 40)
-        Me.lblDownpaymentAmt.TabIndex = 19
+        Me.lblDownpaymentAmt.TabIndex = 18
         Me.lblDownpaymentAmt.Text = "$0"
         Me.lblDownpaymentAmt.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -272,7 +242,7 @@ Partial Class frmMain
         Me.lblYear.Location = New System.Drawing.Point(83, 230)
         Me.lblYear.Name = "lblYear"
         Me.lblYear.Size = New System.Drawing.Size(49, 26)
-        Me.lblYear.TabIndex = 25
+        Me.lblYear.TabIndex = 26
         Me.lblYear.Text = "Years"
         Me.lblYear.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -281,7 +251,7 @@ Partial Class frmMain
         Me.lblDownPercent.Location = New System.Drawing.Point(240, 41)
         Me.lblDownPercent.Name = "lblDownPercent"
         Me.lblDownPercent.Size = New System.Drawing.Size(22, 26)
-        Me.lblDownPercent.TabIndex = 18
+        Me.lblDownPercent.TabIndex = 17
         Me.lblDownPercent.Text = "%"
         Me.lblDownPercent.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -290,7 +260,7 @@ Partial Class frmMain
         Me.lblRatePercent.Location = New System.Drawing.Point(244, 229)
         Me.lblRatePercent.Name = "lblRatePercent"
         Me.lblRatePercent.Size = New System.Drawing.Size(22, 26)
-        Me.lblRatePercent.TabIndex = 26
+        Me.lblRatePercent.TabIndex = 27
         Me.lblRatePercent.Text = "%"
         Me.lblRatePercent.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -299,9 +269,9 @@ Partial Class frmMain
         Me.lblTotalInterest.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTotalInterest.Location = New System.Drawing.Point(610, 47)
         Me.lblTotalInterest.Name = "lblTotalInterest"
-        Me.lblTotalInterest.Size = New System.Drawing.Size(110, 16)
-        Me.lblTotalInterest.TabIndex = 16
-        Me.lblTotalInterest.Text = "Total Interest"
+        Me.lblTotalInterest.Size = New System.Drawing.Size(155, 16)
+        Me.lblTotalInterest.TabIndex = 15
+        Me.lblTotalInterest.Text = "Total interest"
         '
         'lblInterestAmt
         '
@@ -309,7 +279,7 @@ Partial Class frmMain
         Me.lblInterestAmt.Location = New System.Drawing.Point(608, 12)
         Me.lblInterestAmt.Name = "lblInterestAmt"
         Me.lblInterestAmt.Size = New System.Drawing.Size(155, 40)
-        Me.lblInterestAmt.TabIndex = 15
+        Me.lblInterestAmt.TabIndex = 14
         Me.lblInterestAmt.Text = "$0"
         Me.lblInterestAmt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -318,9 +288,9 @@ Partial Class frmMain
         Me.lblPayment.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblPayment.Location = New System.Drawing.Point(445, 47)
         Me.lblPayment.Name = "lblPayment"
-        Me.lblPayment.Size = New System.Drawing.Size(110, 16)
-        Me.lblPayment.TabIndex = 14
-        Me.lblPayment.Text = "Total Payment"
+        Me.lblPayment.Size = New System.Drawing.Size(155, 16)
+        Me.lblPayment.TabIndex = 13
+        Me.lblPayment.Text = "Total payment"
         '
         'lblPaymentAmt
         '
@@ -328,18 +298,18 @@ Partial Class frmMain
         Me.lblPaymentAmt.Location = New System.Drawing.Point(443, 12)
         Me.lblPaymentAmt.Name = "lblPaymentAmt"
         Me.lblPaymentAmt.Size = New System.Drawing.Size(155, 40)
-        Me.lblPaymentAmt.TabIndex = 13
+        Me.lblPaymentAmt.TabIndex = 12
         Me.lblPaymentAmt.Text = "$0"
         Me.lblPaymentAmt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblMonthly
         '
         Me.lblMonthly.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblMonthly.Location = New System.Drawing.Point(281, 47)
+        Me.lblMonthly.Location = New System.Drawing.Point(280, 47)
         Me.lblMonthly.Name = "lblMonthly"
-        Me.lblMonthly.Size = New System.Drawing.Size(110, 16)
-        Me.lblMonthly.TabIndex = 12
-        Me.lblMonthly.Text = "Monthly Payment"
+        Me.lblMonthly.Size = New System.Drawing.Size(155, 16)
+        Me.lblMonthly.TabIndex = 11
+        Me.lblMonthly.Text = "Monthly payment"
         '
         'lblMonthlyAmt
         '
@@ -347,7 +317,7 @@ Partial Class frmMain
         Me.lblMonthlyAmt.Location = New System.Drawing.Point(278, 12)
         Me.lblMonthlyAmt.Name = "lblMonthlyAmt"
         Me.lblMonthlyAmt.Size = New System.Drawing.Size(155, 40)
-        Me.lblMonthlyAmt.TabIndex = 11
+        Me.lblMonthlyAmt.TabIndex = 10
         Me.lblMonthlyAmt.Text = "$0"
         Me.lblMonthlyAmt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -358,7 +328,7 @@ Partial Class frmMain
         Me.lblDownpayment.Location = New System.Drawing.Point(21, 111)
         Me.lblDownpayment.Name = "lblDownpayment"
         Me.lblDownpayment.Size = New System.Drawing.Size(94, 16)
-        Me.lblDownpayment.TabIndex = 20
+        Me.lblDownpayment.TabIndex = 19
         Me.lblDownpayment.Text = "Downpayment"
         '
         'Label1
@@ -368,15 +338,44 @@ Partial Class frmMain
         Me.Label1.Location = New System.Drawing.Point(163, 111)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(86, 16)
-        Me.Label1.TabIndex = 22
+        Me.Label1.TabIndex = 21
         Me.Label1.Text = "Loan Amount"
+        '
+        'lblTotal
+        '
+        Me.lblTotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTotal.Location = New System.Drawing.Point(156, 170)
+        Me.lblTotal.Name = "lblTotal"
+        Me.lblTotal.Size = New System.Drawing.Size(100, 18)
+        Me.lblTotal.TabIndex = 25
+        Me.lblTotal.Text = "Total Loan"
+        Me.lblTotal.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'lblTotalLoan
+        '
+        Me.lblTotalLoan.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTotalLoan.ForeColor = System.Drawing.Color.Maroon
+        Me.lblTotalLoan.Location = New System.Drawing.Point(150, 141)
+        Me.lblTotalLoan.Name = "lblTotalLoan"
+        Me.lblTotalLoan.Size = New System.Drawing.Size(112, 40)
+        Me.lblTotalLoan.TabIndex = 24
+        Me.lblTotalLoan.Text = "$0"
+        Me.lblTotalLoan.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'clmBeginBal
+        '
+        Me.clmBeginBal.Text = "Balance"
+        Me.clmBeginBal.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.clmBeginBal.Width = 115
         '
         'frmMain
         '
         Me.AcceptButton = Me.btnCalc
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 18.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(794, 387)
+        Me.ClientSize = New System.Drawing.Size(794, 312)
+        Me.Controls.Add(Me.lblTotal)
+        Me.Controls.Add(Me.lblTotalLoan)
         Me.Controls.Add(Me.lblPMI)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.lblDownpayment)
@@ -392,7 +391,6 @@ Partial Class frmMain
         Me.Controls.Add(Me.lblDownpaymentAmt)
         Me.Controls.Add(Me.btnExit)
         Me.Controls.Add(Me.btnCalc)
-        Me.Controls.Add(Me.grpAmortization)
         Me.Controls.Add(Me.cmbDownpayment)
         Me.Controls.Add(Me.lblPMIAmt)
         Me.Controls.Add(Me.cmbInterestRate)
@@ -411,7 +409,6 @@ Partial Class frmMain
         Me.Name = "frmMain"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Mortgage Calculator"
-        Me.grpAmortization.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -429,9 +426,6 @@ Partial Class frmMain
     Friend WithEvents lblPMIAmt As System.Windows.Forms.Label
     Friend WithEvents tltpPMI As System.Windows.Forms.ToolTip
     Friend WithEvents cmbDownpayment As System.Windows.Forms.ComboBox
-    Friend WithEvents grpAmortization As System.Windows.Forms.GroupBox
-    Friend WithEvents radMonthly As System.Windows.Forms.RadioButton
-    Friend WithEvents radYearly As System.Windows.Forms.RadioButton
     Friend WithEvents btnCalc As System.Windows.Forms.Button
     Friend WithEvents btnExit As System.Windows.Forms.Button
     Friend WithEvents lblDownpaymentAmt As System.Windows.Forms.Label
@@ -441,7 +435,7 @@ Partial Class frmMain
     Friend WithEvents clmTerm As System.Windows.Forms.ColumnHeader
     Friend WithEvents clmPayment As System.Windows.Forms.ColumnHeader
     Friend WithEvents clmInterest As System.Windows.Forms.ColumnHeader
-    Friend WithEvents clmBalance As System.Windows.Forms.ColumnHeader
+    Friend WithEvents clmEndBalance As System.Windows.Forms.ColumnHeader
     Friend WithEvents lblTotalInterest As System.Windows.Forms.Label
     Friend WithEvents lblInterestAmt As System.Windows.Forms.Label
     Friend WithEvents lblPayment As System.Windows.Forms.Label
@@ -450,5 +444,8 @@ Partial Class frmMain
     Friend WithEvents lblMonthlyAmt As System.Windows.Forms.Label
     Friend WithEvents lblDownpayment As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents lblTotal As System.Windows.Forms.Label
+    Friend WithEvents lblTotalLoan As System.Windows.Forms.Label
+    Friend WithEvents clmBeginBal As System.Windows.Forms.ColumnHeader
 
 End Class
