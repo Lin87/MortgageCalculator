@@ -147,6 +147,51 @@ Public Class frmMain
         dblTotalInterest = dblTotalPmt - dblPrincipal
         lblInterestAmt.Text = dblTotalInterest.ToString("C2")
 
+        populateTheListView(intTerm * 12, dblPayment, dblTotalPmt, dblTotalInterest)
+
         Return dblPayment
     End Function
+
+    Private Sub populateTheListView(ByVal intTerm As Integer, ByVal dblMPMT As Double,
+                                    ByVal dblPMT As Double, ByVal dblInt As Double)
+        ' clear the list first
+        lstvAmortization.Items.Clear()
+
+        Dim arrRowItem(4) As String
+        Dim lstvItem As ListViewItem
+        Dim dblBalance As Double
+        Dim dblMonthlyInterest As Double
+
+        dblMonthlyInterest = dblMPMT - ((dblPMT - dblInt) / intTerm)
+
+        dblBalance = dblPMT
+
+        For rowCount As Integer = 1 To intTerm Step 1
+
+            ' column 1: month
+            arrRowItem(0) = rowCount.ToString()
+
+            ' column 2: balance
+            arrRowItem(1) = dblBalance.ToString("N2")
+
+            ' column 3: interest
+            arrRowItem(2) = dblMonthlyInterest.ToString("N2")
+
+            ' column 4 : monthly payment
+            arrRowItem(3) = dblMPMT.ToString("N2")
+
+            ' column 5: end balance
+            arrRowItem(4) = (dblBalance - dblMPMT).ToString("N2")
+
+            ' update balance
+            dblBalance -= dblMPMT
+
+            ' add to list view
+            lstvItem = New ListViewItem(arrRowItem)
+            lstvAmortization.Items.Add(lstvItem)
+
+        Next rowCount
+
+    End Sub
+
 End Class

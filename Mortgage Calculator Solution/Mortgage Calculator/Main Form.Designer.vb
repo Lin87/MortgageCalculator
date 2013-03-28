@@ -25,8 +25,9 @@ Partial Class frmMain
         Me.components = New System.ComponentModel.Container()
         Me.lstvAmortization = New System.Windows.Forms.ListView()
         Me.clmTerm = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.clmPayment = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.clmBeginBal = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.clmInterest = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.clmPayment = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.clmEndBalance = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.lblHomeVal = New System.Windows.Forms.Label()
         Me.lblDownPmt = New System.Windows.Forms.Label()
@@ -56,7 +57,6 @@ Partial Class frmMain
         Me.Label1 = New System.Windows.Forms.Label()
         Me.lblTotal = New System.Windows.Forms.Label()
         Me.lblTotalLoan = New System.Windows.Forms.Label()
-        Me.clmBeginBal = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.SuspendLayout()
         '
         'lstvAmortization
@@ -66,7 +66,6 @@ Partial Class frmMain
         Me.lstvAmortization.FullRowSelect = True
         Me.lstvAmortization.GridLines = True
         Me.lstvAmortization.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
-        Me.lstvAmortization.HoverSelection = True
         Me.lstvAmortization.Location = New System.Drawing.Point(268, 73)
         Me.lstvAmortization.MultiSelect = False
         Me.lstvAmortization.Name = "lstvAmortization"
@@ -78,25 +77,30 @@ Partial Class frmMain
         'clmTerm
         '
         Me.clmTerm.Text = "Month"
-        Me.clmTerm.Width = 56
         '
-        'clmPayment
+        'clmBeginBal
         '
-        Me.clmPayment.Text = "Payment"
-        Me.clmPayment.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.clmPayment.Width = 115
+        Me.clmBeginBal.Text = "Balance"
+        Me.clmBeginBal.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.clmBeginBal.Width = 105
         '
         'clmInterest
         '
         Me.clmInterest.Text = "Interest"
         Me.clmInterest.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.clmInterest.Width = 115
+        Me.clmInterest.Width = 105
+        '
+        'clmPayment
+        '
+        Me.clmPayment.Text = "Payment"
+        Me.clmPayment.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.clmPayment.Width = 105
         '
         'clmEndBalance
         '
         Me.clmEndBalance.Text = "Ending Balance"
         Me.clmEndBalance.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.clmEndBalance.Width = 115
+        Me.clmEndBalance.Width = 120
         '
         'lblHomeVal
         '
@@ -361,12 +365,6 @@ Partial Class frmMain
         Me.lblTotalLoan.TabIndex = 24
         Me.lblTotalLoan.Text = "$0"
         Me.lblTotalLoan.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'clmBeginBal
-        '
-        Me.clmBeginBal.Text = "Balance"
-        Me.clmBeginBal.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.clmBeginBal.Width = 115
         '
         'frmMain
         '
